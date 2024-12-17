@@ -2,14 +2,23 @@ import { useState } from 'react'
 
 import './App.css'
 
-import BookList from './Booklist.jsx'
-import favouriteBooks from './favouritbooks.jsx';
+import { Alert } from "./Alert.jsx";
 
-const App = () => {
+export const App = () => {
   return (
     <>
-	  <h1>Books of the week</h1>
-      <BookList books={favouriteBooks} />
+      <Alert variant="info">
+        Would you like to browse our recommended products?
+      </Alert>
+      <Alert variant="error">
+        There was an error during your last transaction
+      </Alert>
+      <Alert variant="success">
+        Payment received, thank you for your purchase
+      </Alert>
+      <Alert variant="warning">
+        Please update your profile contact information
+      </Alert>
     </>
   );
 };
