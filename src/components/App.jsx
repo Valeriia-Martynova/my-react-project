@@ -1,26 +1,38 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import ArticleList from '../components/ArticleList/ArticleList';
+import { SearchForm } from './SearchForm/SearchForm.jsx';
+import { fetchArticlesWithTopic } from '../articles-api.js';
 
-import './App.css'
+import './App.css';
 
-import { Alert } from "./Alert.jsx";
+const App = () => {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-export const App = () => {
+  const handleSearch = async topic => {
+    try {
+      setArticles([]);
+      setError(false);
+      setLoading(true);
+      const data = await fetchArticlesWithTopic(topic);
+      setArticles(data);
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <>
-      <Alert variant="info">
-        Would you like to browse our recommended products?
-      </Alert>
-      <Alert variant="error">
-        There was an error during your last transaction
-      </Alert>
-      <Alert variant="success">
-        Payment received, thank you for your purchase
-      </Alert>
-      <Alert variant="warning">
-        Please update your profile contact information
-      </Alert>
-    </>
+    <div>
+      <SearchForm onSearch={handleSearch} />
+      {loading && <Loader />}
+      {error && <Error />}
+      {articles.length > 0 && <ArticleList items={articles} />}
+    </div>
   );
 };
 
-export default App
+export default App;
